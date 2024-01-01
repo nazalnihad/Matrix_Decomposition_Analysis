@@ -55,7 +55,6 @@ float **lu_decomposition(float **A, int n)
         }
     }
 
-    // Free memory for L and U individually
     for (int i = 0; i < n; i++)
     {
         delete[] L[i];
@@ -75,8 +74,7 @@ int main()
     {
         A[i] = new float[n];
     }
-
-    // Sample input matrix
+    
     A[0][0] = 2;
     A[0][1] = 4;
     A[0][2] = -4;
@@ -89,7 +87,7 @@ int main()
 
     float **LU = lu_decomposition(A, n);
 
-    // Print the resulting L and U matrices
+    // Print the resulting matrices
     std::cout << "L:\n";
     for (int i = 0; i < n; i++)
     {
@@ -109,9 +107,6 @@ int main()
         }
         std::cout << std::endl;
     }
-
-    // Free memory (including LU)
-    // ... (same as before) ...
 
     return 0;
 }
