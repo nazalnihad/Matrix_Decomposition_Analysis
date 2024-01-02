@@ -8,21 +8,24 @@ using namespace std;
 // Function to generate a positive definite matrix
 void generate_spd_matrix(float **matrix, int n)
 {
+    // Generate a random symmetric matrix
     for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j <= i; j++)
         {
-            matrix[i][j] = rand() % 10 + 1;
+            matrix[i][j] = matrix[j][i] = rand() % 10 + 1;
         }
     }
 
+    // Make it positive definite
+    float min_eigenvalue = std::numeric_limits<float>::max();
     for (int i = 0; i < n; i++)
     {
-        for (int j = 0; j < n; j++)
-        {
-            matrix[i][j] += matrix[j][i];
-            matrix[j][i] = matrix[i][j];
-        }
+        min_eigenvalue = std::fmin(min_eigenvalue, matrix[i][i]);
+    }
+    for (int i = 0; i < n; i++)
+    {
+        matrix[i][i] += 2 * min_eigenvalue; // positive definiteness
     }
 }
 
