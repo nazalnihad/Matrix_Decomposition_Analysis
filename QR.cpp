@@ -66,7 +66,6 @@ float **qr_decomposition(float **A, int n)
         }
     }
 
-    // Free memory for Q and R individually
     for (int i = 0; i < n; i++)
     {
         delete[] Q[i];
@@ -120,14 +119,14 @@ int main()
         }
         std::cout << std::endl;
     }
-    // Free memory (including QR)
+
     for (int i = 0; i < 2 * n; i++)
     {
         delete[] QR[i];
     }
     delete[] QR;
 
-    // Free memory for A
+
     for (int i = 0; i < n; i++)
     {
         delete[] A[i];
