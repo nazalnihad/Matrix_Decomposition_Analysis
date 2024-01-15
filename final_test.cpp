@@ -2,33 +2,31 @@
 #include <cmath>
 #include <ctime>
 #include <algorithm>
-#include <fstream>
-#include <string>
-#include <sstream>
 
 using namespace std;
 
 // Function to generate a positive definite matrix
-void generate_spd_matrix(float **matrix, int n, const string filename)
+void generate_spd_matrix(float **matrix, int n)
 {
-    // Open the CSV file
-    ifstream file(filename);
-    string line;
-
-    // Read the file line by line
-    for (int i = 0; i < n && getline(file, line); i++)
+    // Generate a random symmetric matrix
+    for (int i = 0; i < n; i++)
     {
-        stringstream ss(line);
-        string item;
-
-        // Parse each value and store it in the matrix
-        for (int j = 0; j < n && getline(ss, item, ','); j++)
+        for (int j = 0; j <= i; j++)
         {
-            matrix[i][j] = stof(item);
+            matrix[i][j] = matrix[j][i] = rand() % 10 + 1;
         }
     }
-    // Close the file
-    file.close();
+
+    // Make it positive definite
+    float min_eigenvalue = std::numeric_limits<float>::max();
+    for (int i = 0; i < n; i++)
+    {
+        min_eigenvalue = std::fmin(min_eigenvalue, matrix[i][i]);
+    }
+    for (int i = 0; i < n; i++)
+    {
+        matrix[i][i] += 2 * min_eigenvalue; // positive definiteness
+    }
 }
 
 // Cholesky decomposition
@@ -172,8 +170,7 @@ int main()
     for (int i = 0; i < n; i++)
         matrix[i] = new float[n];
 
-    string filename = "spd_matrix.csv";
-    generate_spd_matrix(matrix, n, filename);
+    generate_spd_matrix(matrix, n);
 
     clock_t start, end;
     double cpu_time_used;
